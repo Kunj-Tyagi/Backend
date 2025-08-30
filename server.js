@@ -2,8 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
 import errorhandler from "./errorHandler.js";
+import authRoutes from "./routes/auth.js";
+import profileRoutes from "./routes/profile.js";
+
+
 
 dotenv.config();
 connectDB();
@@ -11,7 +14,13 @@ connectDB();
 const app = express();
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
+
+// POST /api/auth/register → Register new user
+// POST /api/auth/login → Login user
+// POST /api/profile → Create/Update profile (protected)
+// GET /api/profile → Get logged-in profile (protected)
+app.use("/api/auth", authRoutes);      // Register + Login
+app.use("/api/profile", profileRoutes); // Profile create/update/get
 app.use("/api/videos", uploadRoutes);
 app.use(errorhandler);
 
